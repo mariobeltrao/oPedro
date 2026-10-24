@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+
+# Caches locais e configurações privadas
+.pnpm-store/
+.env
+.env.*
+!.env.example
+*.log
