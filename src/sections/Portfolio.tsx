@@ -1,4 +1,53 @@
-import { content, editorial } from '../data/content';
-import { Label, Media, Reveal } from '../components/UI';
-import BeforeAfter from '../components/BeforeAfter';
-export default function Portfolio() { return <section className="section portfolio" id="portfolio"><Reveal><div className="section-heading"><div><Label number="04">TRANSFORMAÇÕES</Label><h2>{editorial.portfolio.title}<br/><em>{editorial.portfolio.emphasis}</em></h2></div><p className="pending-note">{editorial.portfolio.text}</p></div>{content.beforeAfter && <><BeforeAfter {...content.beforeAfter}/><p className="comparison-caption">Antes e depois do mesmo atendimento. Quadros extraídos dos vídeos originais; posição e enquadramento variam entre os registros.</p></>}<div className={`portfolio-grid ${content.portfolio.length === 2 ? 'portfolio-pair' : ''}`}>{content.portfolio.length ? content.portfolio.map((item, i) => <figure key={item.src}><Media {...item} sizes="(max-width: 540px) 42vw, 40vw"/><figcaption><span>{item.caption || `ESTUDO ${String(i + 1).padStart(2, '0')}`}</span><span>↗</span></figcaption></figure>) : ['Forma', 'Expressão', 'Identidade'].map((label, i) => <figure key={label}><Media alt={`Trabalho de portfólio ${i + 1}`} label="Trabalho a adicionar"/><figcaption><span>{label}</span><span>0{i + 1}</span></figcaption></figure>)}</div></Reveal></section>; }
+import { useCallback, useRef, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
+import TransformationRoute from './TransformationRoute';
+import { transformationFilms } from '../data/transformations';
+import styles from './Portfolio.module.css';
+
+export default function Portfolio() {
+  const stage = useRef<HTMLDivElement>(null);
+  const cards = useRef<(HTMLElement | null)[]>([]);
+  const reducedMotion = useReducedMotion();
+  const [revealed, setRevealed] = useState(() => transformationFilms.map(() => false));
+  const reveal = useCallback((index: number) => setRevealed(previous => {
+    if (previous[index]) return previous;
+    return previous.map((active, item) => active || item === index);
+  }), []);
+
+  return (
+    <section id="portfolio" className={styles.section} aria-labelledby="transformations-title">
+      <div className={styles.layout}>
+        <header className={styles.header}>
+          <div>
+            <div className={styles.label}><span>04 /</span><span>TRANSFORMAÇÕES</span></div>
+            <h2 id="transformations-title" className={styles.headline}>Cada transformação<br/><em>revela um percurso.</em></h2>
+            <p className={styles.subtitle}>Do antes ao resultado, cada detalhe faz parte da construção da imagem.</p>
+          </div>
+          <span className={styles.signature} aria-label="OPedro">O<span>P</span><i aria-hidden="true"/></span>
+        </header>
+        <div ref={stage} className={styles.stage}>
+          <TransformationRoute stage={stage} cards={cards} onReveal={reveal}/>
+          {transformationFilms.map((film, index) => {
+            const active = !!reducedMotion || revealed[index];
+            return <figure key={film.id} ref={element => { cards.current[index] = element; }}
+              className={styles.film} data-state={active ? 'revealed' : 'locked'}>
+              <div className={styles.screen}>
+                {active && film.src ? <video src={film.src} poster={film.poster} controls playsInline preload="none" aria-label={film.label}/>
+                  : <div className={styles.placeholder}>
+                    <span className={styles.screenNumber} aria-hidden="true">{film.id}</span>
+                    <span className={styles.symbol} aria-hidden="true">{active ? <svg viewBox="0 0 24 24"><path d="m9 6 9 6-9 6Z"/></svg> : <span>·</span>}</span>
+                    <span className={styles.availability}>VÍDEO EM BREVE</span>
+                  </div>}
+              </div>
+              <figcaption>
+                <div className={styles.filmLabel}><span>{film.label}</span><span className={styles.state}>{active ? 'Etapa revelada' : 'A revelar'}</span></div>
+                <p>{film.description}</p>
+              </figcaption>
+            </figure>;
+          })}
+          <span className={styles.endnote}>CADA IMAGEM, UM NOVO CAPÍTULO.<i aria-hidden="true"/></span>
+        </div>
+      </div>
+    </section>
+  );
+}

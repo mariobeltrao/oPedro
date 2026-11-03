@@ -70,7 +70,7 @@ Todos os vídeos são HEVC/H.265. Dimensões abaixo representam a orientação d
 - `public/videos/media/hero.mp4`: versão 1080×1920, H.264, 24 fps, sem áudio, fast-start.
 - `public/videos/media/hero-mobile.mp4`: versão 720×1280, H.264, 24 fps, sem áudio, fast-start.
 - Vídeo completo de 55,8 s preservado nas duas versões; sem truncar a montagem original.
-- Hero com cover e object-position distinto por breakpoint; por ser vertical, o enquadramento desktop recorta parte da altura. Poster imediato; vídeo aparece apenas quando apto a reproduzir.
+- Hero fullscreen em cover, com texto nas extremidades e recorte central do arquivo vertical. As limitações de enquadramento estão documentadas. Poster imediato; vídeo aparece apenas quando apto a reproduzir. Ver docs/HERO-TIPOGRAFIA.md.
 - Movimento reduzido usa somente o poster, sem montar o vídeo. Falha de reprodução também mantém o poster. Pausa manual e pausa fora da primeira dobra.
 - Imagens abaixo da dobra usam lazy loading, dimensões, proporções reservadas e srcset/sizes.
 - Comparador usa range nativo para teclado/toque, sem bloquear a rolagem vertical.

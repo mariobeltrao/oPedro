@@ -26,5 +26,5 @@ for filename, second, name in frames:
    resized = image.resize((width,round(image.height*width/image.width)),Image.Resampling.LANCZOS)
    resized.save(root/f'public/images/media/{name}-{width}.webp',quality=87,method=6)
 for width, name in [(1080,'hero'),(720,'hero-mobile')]:
- subprocess.run([ffmpeg,'-loglevel','error','-i',str(source/'hero.mp4.mov'),'-map','0:v:0','-an','-sn','-dn','-map_metadata','-1','-vf',f'scale={width}:-2,fps=24','-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart','-y',str(root/f'public/videos/media/{name}.mp4')],check=True)
+ subprocess.run([ffmpeg,'-loglevel','error','-i',str(source/'hero.mp4.mov'),'-map','0:v:0','-map','0:a:0','-c:a','copy','-sn','-dn','-map_metadata','-1','-vf',f'scale={width}:-2,fps=24','-c:v','libx264','-crf','23','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart','-y',str(root/f'public/videos/media/{name}.mp4')],check=True)
 print('Derivados concluídos. Originais preservados.')

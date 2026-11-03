@@ -1,27 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
 import { navigation } from '../data/content';
+import { noblesseNavigation } from '../data/heroNavigation';
+import styles from './Header.module.css';
+
+function NavigationIcon({ section }: { section: string }) {
+  if (section === '88-dias') return <span className={styles.days} aria-hidden="true">88</span>;
+  if (section === 'ambiente') return <span className={styles.noblesse} aria-hidden="true">
+    <img src={noblesseNavigation.symbolSrc} width="32" height="32" alt=""/>
+  </span>;
+  return <svg className={styles.icon} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    {section === 'sobre' ? <><circle cx="16" cy="9" r="5"/><path d="M6 28v-3a10 8 0 0 1 20 0v3"/></>
+      : section === 'portfolio' ? <><path d="M17 7c0 7-3 10-10 10 7 0 10 3 10 10 0-7 3-10 10-10-7 0-10-3-10-10Z"/><path d="M6 3v6M3 6h6M26 24v5M23.5 26.5h5"/></>
+        : <><circle cx="8" cy="24" r="4"/><circle cx="24" cy="24" r="4"/><path d="M11 21 24 5M21 21 8 5"/></>}
+  </svg>;
+}
+
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const toggle = useRef<HTMLButtonElement>(null);
-  const panel = useRef<HTMLElement>(null);
-  useEffect(() => {
-    if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    panel.current?.querySelector<HTMLAnchorElement>('a')?.focus();
-    const key = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { setOpen(false); toggle.current?.focus(); }
-      if (e.key === 'Tab') {
-        const elements = [toggle.current, ...Array.from(panel.current?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter(Boolean) as HTMLElement[];
-        const first = elements[0], last = elements[elements.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    };
-    const resize = () => { if (window.innerWidth > 800) setOpen(false); };
-    window.addEventListener('keydown', key); window.addEventListener('resize', resize);
-    return () => { document.body.style.overflow = previous; window.removeEventListener('keydown', key); window.removeEventListener('resize', resize); };
-  }, [open]);
-  return <header className="header"><a className="wordmark" href="#inicio" aria-label="OPedro, início">o<span>Pedro</span><sup>JP</sup></a><nav className="desktop-nav" aria-label="Principal">{navigation.map(([name, id]) => <a key={id} href={`#${id}`}>{name}</a>)}</nav><a className="header-contact" href="#contato">Vamos conversar <span>↗</span></a><button ref={toggle} className="menu-toggle" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)}>{open ? 'Fechar −' : 'Menu +'}</button><AnimatePresence>{open && <motion.nav ref={panel} id="mobile-menu" className="mobile-nav" aria-label="Navegação móvel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{[...navigation, ['Contato', 'contato']].map(([name, id], i) => <a href={`#${id}`} key={id} onClick={() => { setOpen(false); toggle.current?.focus(); }}><small>0{i + 1}</small>{name}<span>↗</span></a>)}</motion.nav>}</AnimatePresence></header>;
+  return <header className={`header ${styles.header}`}>
+    <a className="wordmark" href="#inicio" aria-label="OPedro, início">o<span>Pedro</span><sup>JP</sup></a>
+    <nav className={styles.navigation} aria-label="Principal">
+      {navigation.map(([name, id]) => <a className={styles.item} key={id} href={`#${id}`} aria-label={id === 'sobre' ? 'O Pedro' : name} title={id === 'sobre' ? 'O Pedro' : name}>
+        <span className={styles.iconFrame}><NavigationIcon section={id}/></span>
+        <span className={styles.caption} aria-hidden="true"><i/>{id === 'sobre' ? 'O Pedro' : name}</span>
+      </a>)}
+    </nav>
+    <a className={`header-contact ${styles.contact}`} href="#contato">Vamos conversar <span aria-hidden="true">↗</span></a>
+  </header>;
 }

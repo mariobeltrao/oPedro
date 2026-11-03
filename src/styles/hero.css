@@ -1,0 +1,174 @@
+/* Fullscreen em todos os breakpoints. A faixa central fica livre de texto HTML. */
+.header {
+  position: absolute;
+  inset: 0 0 auto;
+  background: transparent;
+  min-height: 96px;
+}
+.hero.hero-fullscreen {
+  /* Amostras 0/8/12/16/24/32/48 s: os olhos ficam no terço superior.
+     Valores são alinhamentos de cover, não coordenadas percentuais do rosto. */
+  --hero-focus-x: 50%;
+  --hero-focus-y: 4%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  isolation: isolate;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  max-height: none;
+  padding: clamp(6.75rem, 14svh, 10rem) 7% clamp(1.25rem, 3svh, 2.5rem);
+  gap: 2rem;
+  overflow: hidden;
+}
+.hero-backdrop, .hero-backdrop-poster, .hero-backdrop-video, .hero-scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-backdrop { z-index: -1; }
+.hero-backdrop-poster, .hero-backdrop-video {
+  display: block;
+  object-fit: cover;
+  /* Prioridade: olhos e expressão; sem escala extra ou recorte do arquivo. */
+  object-position: var(--hero-focus-x) var(--hero-focus-y);
+}
+.hero-backdrop-video { opacity: 0; transition: opacity .5s; }
+.hero-backdrop-video.is-ready { opacity: 1; }
+.hero-scrim {
+  background: linear-gradient(180deg, #10150f80 0%, transparent 34%, transparent 62%, #10150fb3 100%);
+}
+.hero-copy { position: relative; min-width: 0; }
+.hero-fullscreen h1 {
+  font-size: clamp(2.75rem, 5.6vw, 6rem);
+  line-height: .98;
+  margin: 1rem 0 0;
+  max-width: 12ch;
+  text-align: left;
+}
+.hero-fullscreen h1 > span, .hero-fullscreen h1 > em { display: block; }
+.hero-lower { position: relative; min-width: 0; }
+.hero-actions { min-width: 0; max-width: 28rem; }
+.hero-subtitle { font-size: clamp(.8rem, 1vw, 1rem); line-height: 1.7; }
+.hero-fullscreen .hero-support { font-size: .7rem; line-height: 1.7; max-width: 23rem; margin-top: .4rem; }
+.hero-work-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 22rem;
+  margin-top: 1rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid #ffffff50;
+  font-size: .75rem;
+  line-height: 1.7;
+}
+.hero-work-link > span { font-size: 1.25rem; transition: transform .25s; }
+.hero-work-link:hover > span { transform: translate(3px, -3px); }
+.hero-fullscreen-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(1.1rem, 3svh, 2rem);
+  font-size: .5rem;
+  line-height: 1.6;
+  letter-spacing: .05em;
+}
+.hero-scroll { display: flex; align-items: center; gap: .8rem; }
+.hero-location { margin-left: auto; }
+.film-toggle {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .5rem .75rem;
+  border: 1px solid #ffffff50;
+  border-radius: 2rem;
+  color: #f1eee5;
+  background: #15161430;
+  font-size: .6rem;
+  white-space: nowrap;
+}
+.film-static-note { font-size: .55rem; letter-spacing: 0; max-width: 12rem; }
+/* Wide e notebooks 16:9 mostram apenas cerca de 32% da altura original.
+   Subir a janela visível evita descartar os olhos nas cenas de atendimento. */
+@media (min-width: 1600px) {
+  .hero.hero-fullscreen { --hero-focus-y: 3%; }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .hero.hero-fullscreen { --hero-focus-y: 2%; }
+}
+@media (min-width: 801px) and (max-width: 1199px) {
+  .hero.hero-fullscreen { --hero-focus-y: 0%; }
+}
+@media (max-width: 800px) {
+  .header { min-height: 84px; }
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    padding: 5.5rem 8% 2rem;
+    background: #222820;
+  }
+  .mobile-nav a { font-size: 1.4rem; padding: .8rem 0; }
+  .hero.hero-fullscreen { --hero-focus-y: 8%; padding-top: clamp(6.5rem, 13svh, 9rem); }
+  .hero-fullscreen h1 { font-size: clamp(2.8rem, 7.5vw, 4.5rem); }
+}
+@media (max-width: 540px) {
+  .hero.hero-fullscreen { --hero-focus-y: 48%; padding-inline: 7%; gap: 1rem; }
+  .hero-fullscreen h1 { font-size: clamp(2.45rem, 10.5vw, 3.5rem); margin-top: .75rem; }
+  .hero-fullscreen .eyebrow { font-size: .5rem; }
+  .hero-actions { max-width: 100%; }
+  .hero-subtitle { font-size: .75rem; }
+  .hero-fullscreen .hero-support { font-size: .65rem; max-width: 20rem; }
+  .hero-work-link { max-width: 100%; font-size: .65rem; margin-top: .8rem; padding-bottom: .5rem; }
+  .hero-fullscreen-foot { gap: .65rem; font-size: .43rem; margin-top: 1rem; }
+  .hero-scroll { gap: .5rem; max-width: 8rem; }
+  .hero-scroll .scroll-line { height: 25px; }
+  .hero-location { max-width: 5rem; text-align: right; }
+  .hero-location .coordinate { display: none; }
+  .film-toggle { font-size: .5rem; padding: .5rem .6rem; gap: .4rem; }
+  .film-static-note { font-size: .45rem; max-width: 5rem; }
+}
+@media (max-height: 650px) {
+  .hero.hero-fullscreen { padding-top: 6.25rem; padding-bottom: 1rem; }
+  .hero-fullscreen h1 { font-size: clamp(2rem, 8svh, 3.5rem); }
+  .hero-fullscreen .hero-support { margin-top: .25rem; }
+  .hero-fullscreen-foot { margin-top: .75rem; }
+  .hero-work-link { margin-top: .5rem; }
+}
+
+/* Áudio: controle no mesmo rodapé da pausa, fora da faixa central de legendas. */
+.hero-fullscreen .hero-media-controls { display: flex; flex: 0 0 auto; align-items: center; gap: .5rem; }
+.hero-fullscreen .hero-audio-toggle {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border: 1px solid #ffffff50;
+  border-radius: 50%;
+  background: #15161430;
+  color: #f1eee5;
+  cursor: pointer;
+}
+.hero-fullscreen .hero-audio-toggle svg { width: 18px; height: 18px; }
+.hero-fullscreen .hero-audio-toggle[aria-pressed='true'] { background: #ffffff15; border-color: #ffffff90; }
+.hero-fullscreen .hero-audio-toggle:hover { background: #ffffff15; }
+.hero-fullscreen .hero-audio-toggle:focus-visible { outline: 2px solid #9984bc; outline-offset: 5px; }
+.hero-fullscreen .hero-audio-toggle:disabled { cursor: wait; opacity: .5; }
+.hero-fullscreen .hero-audio-status { display: block; font-family: var(--font-interface); font-size: 10px; line-height: 1.5; text-align: right; color: #f1eee5; }
+.hero-fullscreen .hero-audio-status:not(:empty) { margin-top: 8px; }
+@media (max-width: 540px) {
+  .hero-fullscreen .hero-fullscreen-foot { gap: .4rem; }
+  .hero-fullscreen .hero-media-controls { gap: .35rem; }
+  .hero-fullscreen .hero-audio-toggle { width: 32px; height: 32px; padding: 6px; }
+  .hero-fullscreen .hero-scroll { max-width: 6rem; }
+}
+@media (max-width: 360px) {
+  .hero-fullscreen .hero-location { max-width: 4rem; }
+  .hero-fullscreen .hero-media-controls { gap: .25rem; }
+}

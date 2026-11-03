@@ -1,6 +1,10 @@
 # OPedro — Pedro Barros / V2
 
-Revisão de conteúdo, narrativa e disposição sobre a V1 existente. React, TypeScript, Vite, Motion e CSS próprio. Paleta, fontes locais, assinatura OPedro, componentes de mídia e animações preservados.
+Revisão de conteúdo, narrativa e disposição sobre a V1 existente. React, TypeScript, Vite, Motion e CSS próprio. Paleta, assinatura OPedro, componentes de mídia e animações preservados. O refinamento tipográfico utiliza Fraunces local como alternativa temporária à Bringbold Nineties.
+
+## Retomar em outro ambiente ou com outra IA
+
+Leia [docs/CONTINUIDADE.md](docs/CONTINUIDADE.md) para o estado atual, os arquivos de cada seção e as restrições de edição. As descrições da V1/V2 e os relatos de testes abaixo registram etapas anteriores e podem ter sido substituídos pelos refinamentos documentados ali.
 
 ## Executar localmente
 
@@ -69,3 +73,15 @@ Permanecem pendentes: endereço oficial e autorização da identidade da Nobless
 - Sem overflow horizontal observado em 320, 390, 768 e 1280 px.
 - Enquadramentos da Hero e do comparador e galeria Noblesse inspecionados em viewport móvel; composição desktop da Hero também revisada.
 - Movimento reduzido e falha de vídeo implementados com poster; simulação destes estados e teste em aparelho físico com toque ainda não realizados. Viewport móvel não equivale a teste em dispositivo real.
+
+## Refinamento da Hero e tipografia
+
+Hero fullscreen em desktop, tablet e mobile: vídeo absoluto em `cover`, ocupando `100svh`, com cabeçalho e textos sobrepostos. Headline na faixa superior e apoio/CTA na inferior deixam o centro mais livre para as legendas. Os vídeos, tipografia e conteúdos institucionais permanecem os mesmos. O arquivo vertical sofre recortes em telas largas; limites descritos na documentação.
+
+Fraunces normal/itálica em WOFF2 local, com licença SIL OFL inclusa, é a alternativa temporária à Bringbold Nineties (arquivos originais não fornecidos). Sans-serif preservada na interface. Fontes, escala responsiva e futura substituição configuradas em `src/styles/typography.css`; composição da Hero em `src/styles/hero.css`.
+
+Validação fullscreen nas seis resoluções solicitadas, de 1920×1080 a 375×667, sem overflow e com vídeo preenchendo toda a Hero. Mais detalhes, licença, medidas e limitações: [docs/HERO-TIPOGRAFIA.md](docs/HERO-TIPOGRAFIA.md).
+
+## Foco do vídeo da Hero
+
+O enquadramento desktop/notebook prioriza agora o rosto e os olhos no terço superior do vídeo, com variáveis CSS por breakpoint. Mobile preservado. Sem mudança nos textos, tipografia, vídeo ou composição da Hero. Detalhes e limitações, incluindo o recorte de legendas mais baixas: [docs/ENQUADRAMENTO.md](docs/ENQUADRAMENTO.md).
